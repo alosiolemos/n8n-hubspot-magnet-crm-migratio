@@ -37,9 +37,8 @@ Os templates estão **inativos**, sem credenciais, com integrações e agendamen
 
 ## Screenshots
 
-![Espaço reservado para a automação](assets/screenshots/preview.svg)
+![Migração de clientes do HubSpot para o Magnet Customer](assets/screenshots/migra%C3%A7%C3%A3o.png)
 
-Envie uma captura preparada para publicação em `assets/screenshots/` e informe o nome para conectar ao README. A imagem original não foi copiada automaticamente.
 
 ## O que explorar
 
