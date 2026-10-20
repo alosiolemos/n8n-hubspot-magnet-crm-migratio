@@ -1,0 +1,102 @@
+{
+  "escopo": "JavaScript e estrutura dos templates, sem APIs, n8n ou CRMs reais",
+  "total": 24,
+  "testes": [
+    {
+      "teste": "ativos: sintaxe dos dez corpos JavaScript",
+      "resultado": "passou"
+    },
+    {
+      "teste": "ativos: cursor inicial e continuação",
+      "resultado": "passou"
+    },
+    {
+      "teste": "ativos: agregação das páginas de histórico simuladas",
+      "resultado": "passou"
+    },
+    {
+      "teste": "ativos: agrupamento, total e referência por maior valor",
+      "resultado": "passou"
+    },
+    {
+      "teste": "ativos: entrada vazia sinaliza ausência",
+      "resultado": "passou"
+    },
+    {
+      "teste": "ativos: agrupamento alternativo também soma os valores",
+      "resultado": "passou"
+    },
+    {
+      "teste": "ativos: seleção de contas respeita o grupo",
+      "resultado": "passou"
+    },
+    {
+      "teste": "ativos: Separar Contatos aplica recorte e sentinela",
+      "resultado": "passou"
+    },
+    {
+      "teste": "ativos: Separar Notes1 aplica recorte e sentinela",
+      "resultado": "passou"
+    },
+    {
+      "teste": "ativos: Separar E-mail aplica recorte e sentinela",
+      "resultado": "passou"
+    },
+    {
+      "teste": "ativos: Separar Meet aplica recorte e sentinela",
+      "resultado": "passou"
+    },
+    {
+      "teste": "ativos: estrutura pública e conexões válidas",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: sintaxe dos dez corpos JavaScript",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: cursor inicial e continuação",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: agregação das páginas de histórico simuladas",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: agrupamento, total e referência por maior valor",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: entrada vazia sinaliza ausência",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: agrupamento alternativo também soma os valores",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: seleção de contas respeita o grupo",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: Separar Contatos aplica recorte e sentinela",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: Separar Notes1 aplica recorte e sentinela",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: Separar E-mail aplica recorte e sentinela",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: Separar Meet aplica recorte e sentinela",
+      "resultado": "passou"
+    },
+    {
+      "teste": "cancelados: estrutura pública e conexões válidas",
+      "resultado": "passou"
+    }
+  ]
+}

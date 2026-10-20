@@ -1,0 +1,116 @@
+[
+  {
+    "variant": "ativos",
+    "total": 71,
+    "disabled": 30,
+    "codes": [
+      {
+        "name": "paginacao3",
+        "path": "code/ativos/01-paginacao3.js",
+        "legacy": true
+      },
+      {
+        "name": "prox_pag3",
+        "path": "code/ativos/02-prox-pag3.js",
+        "legacy": true
+      },
+      {
+        "name": "All",
+        "path": "code/ativos/03-all.js",
+        "legacy": true
+      },
+      {
+        "name": "Extração do Grupo Econômico1",
+        "path": "code/ativos/04-extracao-do-grupo-economico1.js",
+        "legacy": false
+      },
+      {
+        "name": "Obter Grupo Economico",
+        "path": "code/ativos/05-obter-grupo-economico.js",
+        "legacy": false
+      },
+      {
+        "name": "Obetem negócios vinculados",
+        "path": "code/ativos/06-obetem-negocios-vinculados.js",
+        "legacy": false
+      },
+      {
+        "name": "Separar Contatos",
+        "path": "code/ativos/07-separar-contatos.js",
+        "legacy": false
+      },
+      {
+        "name": "Separar Notes1",
+        "path": "code/ativos/08-separar-notes1.js",
+        "legacy": false
+      },
+      {
+        "name": "Separar E-mail",
+        "path": "code/ativos/09-separar-e-mail.js",
+        "legacy": false
+      },
+      {
+        "name": "Separar Meet",
+        "path": "code/ativos/10-separar-meet.js",
+        "legacy": false
+      }
+    ]
+  },
+  {
+    "variant": "cancelados",
+    "total": 72,
+    "disabled": 31,
+    "codes": [
+      {
+        "name": "paginacao3",
+        "path": "code/cancelados/01-paginacao3.js",
+        "legacy": true
+      },
+      {
+        "name": "prox_pag3",
+        "path": "code/cancelados/02-prox-pag3.js",
+        "legacy": true
+      },
+      {
+        "name": "All",
+        "path": "code/cancelados/03-all.js",
+        "legacy": true
+      },
+      {
+        "name": "Extração do Grupo Econômico1",
+        "path": "code/cancelados/04-extracao-do-grupo-economico1.js",
+        "legacy": false
+      },
+      {
+        "name": "Obter Grupo Economico",
+        "path": "code/cancelados/05-obter-grupo-economico.js",
+        "legacy": false
+      },
+      {
+        "name": "Obetem negócios vinculados",
+        "path": "code/cancelados/06-obetem-negocios-vinculados.js",
+        "legacy": false
+      },
+      {
+        "name": "Separar Contatos",
+        "path": "code/cancelados/07-separar-contatos.js",
+        "legacy": false
+      },
+      {
+        "name": "Separar Notes1",
+        "path": "code/cancelados/08-separar-notes1.js",
+        "legacy": false
+      },
+      {
+        "name": "Separar E-mail",
+        "path": "code/cancelados/09-separar-e-mail.js",
+        "legacy": false
+      },
+      {
+        "name": "Separar Meet",
+        "path": "code/cancelados/10-separar-meet.js",
+        "legacy": false
+      }
+    ]
+  }
+]

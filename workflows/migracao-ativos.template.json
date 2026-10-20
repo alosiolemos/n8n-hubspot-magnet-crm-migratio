@@ -1,0 +1,2523 @@
+{
+  "name": "HubSpot → Magnet Customer — ativos — template público",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Migração HubSpot → Magnet Customer\nTemplate público inativo. Configure mapeamentos e credenciais em ambiente de teste.",
+        "height": 1680,
+        "width": 280,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        32
+      ],
+      "id": "e366d746-2711-46b1-9b86-1a53bf30c77d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        224
+      ],
+      "id": "1f8e0da2-69b5-45f9-b7ed-08fc19ba32eb",
+      "name": "When clicking ‘Test workflow’",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$node[\"ObterContas\"].json[\"paging\"][\"next\"][\"after\"]}}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "name": "IF6",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        1232
+      ],
+      "id": "0cd2217a-3399-4ba0-b8dd-51c5591b3d43"
+    },
+    {
+      "parameters": {
+        "functionCode": "var run_index = $thisRunIndex;\nvar after = items[0].json.after;\n\nif (run_index == 0){\n  return{\n    after: 0,\n    run_index: run_index\n  }\n}\n\nelse{\n  return{\n    after: after,\n    run_index: run_index\n  }\n}"
+      },
+      "name": "paginacao3",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        80
+      ],
+      "id": "093f30fd-773e-4d08-ae3b-c3a01f6ab1da"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$node[\"Paginação HubSpot\"].json[\"paging\"][\"next\"][\"after\"]}}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "name": "IF7",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        352,
+        80
+      ],
+      "id": "82f85e20-649b-40f0-afc1-9a159f8addfd"
+    },
+    {
+      "parameters": {
+        "functionCode": "var after = $item(\"0\").$node[\"Paginação HubSpot\"].json[\"paging\"][\"next\"][\"after\"];\n\nreturn{\n  after\n}"
+      },
+      "name": "prox_pag3",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        272,
+        272
+      ],
+      "id": "67f7153a-74df-4039-bdf8-eb179dd8db00"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.hubapi.com/crm/v3/objects/CONFIGURE_ID_007/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_pipeline\",\n          \"operator\": \"EQ\",\n          \"value\": \"CONFIGURE_PIPELINE_192\"\n        },\n        {\n          \"propertyName\": \"hs_pipeline_stage\",\n          \"operator\": \"IN\",\n          \"values\": [\"CONFIGURE_STAGE_193\",\"CONFIGURE_STAGE_194\",\"CONFIGURE_STAGE_195\",\"CONFIGURE_STAGE_196\",\"CONFIGURE_STAGE_197\",\"CONFIGURE_STAGE_198\",\"CONFIGURE_STAGE_199\"]\n        },\n        {\n          \"propertyName\": \"magnetcustomer\",\n          \"operator\": \"EQ\",\n          \"value\": \"Não\"\n        }          \n      ]\n    }\n  ],\n  \"properties\": [\n    \"hs_createdate\",\n    \"conta_name\",\n    \"guide_legado\",\n    \"grupo_economico\",\n    \"id_do_parceiro_sankhya\",\n    \"cs_da_conta\",\n    \"razao_social_da_conta\",\n    \"cnpj\",\n    \"pulse\",\n    \"motivo_de_pulse\",\n    \"data_de_atualizacao_do_pulse\",\n    \"canais_de_coleta_utilizados_hoje_pelo_cliente\",\n    \"canais_de_coleta_que_o_cliente_pretende_utilizar\",\n    \"data_de_inicio_da_vigencia\",\n    \"data_de_fim_da_vigencia\",\n    \"vigencia_do_contrato__em_meses_\",\n    \"qual_o_segmento_de_atuacao_da_sua_empresa_\",\n    \"subsegmento_da_empresa\",\n    \"proprietario_ev\",\n    \"Valor\",\n    \"valor_do_pagamento_no_ultimo_faturamento\",\n    \"cidade\",\n    \"estado__uf_\",\n    \"plataforma_legado\",\n    \"professional_service_contratado\",\n    \"logradouro\",\n    \"complemento\",\n    \"site\",\n    \"link_do_contrato_assinado\",\n    \"link_da_proposta\",\n    \"metricas_que_a_empresa_pretende_acompanhar\",\n    \"principal_desafio_para_alcancar_objetivo\",\n    \"objetivo_principal_com_a_plataforma\",\n    \"numero_de_clientes_monitorados_por_ciclo\",\n    \"ciclo_de_monitoramento\",\n    \"data_da_ultima_renovacao_dos_creditos\",\n    \"dia_da_renovacao_do_ciclo\",\n    \"guide_sap__codigo_pn_\",\n    \"hs_object_id\",\n    \"recorrencia_de_pagamento\"\n  ],\n  \"limit\": 200,\n  \"after\": {{$json[\"after\"]}}\n}",
+        "options": {}
+      },
+      "id": "cc4d54dc-d95c-4fc0-8c86-1ab87a5d96f0",
+      "name": "Paginação HubSpot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        144,
+        80
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "unit": "seconds"
+      },
+      "id": "d2613cbb-965a-46f8-8638-ff76d6f45c79",
+      "name": "Wait1",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        32,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "const allData = []\nlet counter = 0;\n\ndo {\n  try {\n    // Verifique os dados retornados para cada iteração\n    const items = $items(\"Paginação HubSpot\", 0, counter).map(item => item.json.results);\n\n    allData.push.apply(allData, items[0]);\n  } catch (error) {\n\n    return allData;\n  }\n\n  counter++;\n} while(true);\n\n"
+      },
+      "name": "All",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        544,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "796ca30d-af64-46b3-9398-10cc175d3019"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ===========================================\n// ETAPA 1 — ENTRADA UNIVERSAL (IN-OUT)\n// ===========================================\nconst allItems = $input.all(); // Pega tudo o que vier na entrada\nlet flattened = []; // Array final para armazenar os registros normalizados\n\n// Itera sobre cada item recebido\nfor (const item of allItems) {\n  const json = item.json;\n\n  if (Array.isArray(json?.results)) {\n    // Caso 1: item.json.results é um array\n    json.results.forEach(r => flattened.push({ json: r }));\n  } else if (Array.isArray(json)) {\n    // Caso 2: item.json é um array direto\n    json.forEach(r => flattened.push({ json: r }));\n  } else if (json && typeof json === 'object') {\n    // Caso 3: item.json é um único objeto\n    flattened.push({ json });\n  }\n}\n\n// Se não houver nada, retorna aviso\nif (flattened.length === 0) {\n  return [{ json: { mensagem: \"Nenhum item encontrado\" } }];\n}\n\n// ===========================================\n// ETAPA 2 — AGRUPAMENTO E PROCESSAMENTO\n// ===========================================\n\n// Extrai os dados planos\nconst data = flattened.map(item => item.json);\n\n// Função segura para converter número\nconst parseNum = (val) => {\n  if (val === null || val === undefined || val === \"\") return 0;\n  return Number(val.toString().replace(\",\", \".\")) || 0;\n};\n\n// Lista de campos de interesse\nconst campos = [\n  \"canais_de_coleta_utilizados_hoje_pelo_cliente\",\n  \"cidade\",\n  \"cnpj\",\n  \"complemento\",\n  \"conta_name\",\n  \"cs_da_conta\",\n  \"endereco_completo\",\n  \"estado__uf_\",\n  \"id_do_parceiro_sankhya\",\n  \"plataforma_legado\",\n  \"qual_o_segmento_de_atuacao_da_sua_empresa_\",\n  \"razao_social_da_conta\",\n  \"subsegmento_da_empresa\",\n  \"valor\",\n  \"link_do_contrato_assinado\",\n  \"link_da_proposta\",\n  \"hs_createdate\",\n  \"proprietario_ev\",\n  \"numero_de_clientes_monitorados_por_ciclo\",\n  \"ciclo_de_monitoramento\",\n  \"data_da_ultima_renovacao_dos_creditos\",\n  \"dia_da_renovacao_do_ciclo\",\n  \"guide_sap__codigo_pn_\",\n  \"hs_object_id\",\n  \"recorrencia_de_pagamento\"\n];\n\n// ==============================\n// AGRUPA REGISTROS POR GRUPO\n// ==============================\nconst grouped = {};\n\nfor (const record of data) {\n  const props = record.properties || record; // garante compatibilidade\n  const grupo = props.grupo_economico || \"SEM GRUPO\";\n  if (!grouped[grupo]) grouped[grupo] = [];\n  grouped[grupo].push({ ...record, properties: props });\n}\n\n// ==============================\n// PROCESSA CADA GRUPO\n// ==============================\nconst output = [];\n\nfor (const [grupo, registros] of Object.entries(grouped)) {\n  // Ordena registros por valor (maior primeiro)\n  registros.sort((a, b) => parseNum(b.properties.valor) - parseNum(a.properties.valor));\n\n  // Função auxiliar: primeiro valor não vazio\n  const getComFallback = (campo) => {\n    for (const r of registros) {\n      const v = r.properties[campo];\n      if (v !== undefined && v !== null && v !== \"\") return v;\n    }\n    return null;\n  };\n\n  // Base: o de maior valor\n  const base = registros[0];\n  const props = base.properties;\n\n  // Campos de referência\n  const referencia = {};\n  for (const c of campos) {\n    referencia[`${c}_referencia`] = props[c] || getComFallback(c) || null;\n  }\n\n  // Soma de valores\n  const valor_total = registros.reduce((acc, r) => acc + parseNum(r.properties.valor), 0);\n\n  // Última atualização\n  const ultima_atualizacao = registros.reduce(\n    (max, r) => (r.updatedAt > max ? r.updatedAt : max),\n    registros[0].updatedAt\n  );\n\n  // Campos únicos\n  const agrupados = {};\n  for (const c of campos) agrupados[c] = new Set();\n  for (const r of registros) {\n    const p = r.properties;\n    for (const c of campos) {\n      if (p[c]) agrupados[c].add(p[c]);\n    }\n  }\n\n  // Arrays finais\n  const conjuntos = Object.fromEntries(\n    Object.entries(agrupados)\n      .filter(([k]) => k !== \"grupo_economico\")\n      .map(([k, v]) => [k, Array.from(v)])\n  );\n\n  // Cidade - UF\n  const cidade = props.cidade || getComFallback(\"cidade\") || \"\";\n  const uf = props.estado__uf_ || getComFallback(\"estado__uf_\") || \"\";\n  const cidade_uf = cidade && uf ? `${cidade} - ${uf}` : cidade || uf || null;\n\n  // Estrutura final\n  const saida = {\n    id: base.id || base.properties?.hs_object_id || null,\n    grupo_economico: grupo,\n    cidade_uf,\n    ...referencia,\n    valor_referencia: parseNum(base.properties.valor),\n    valor_total: Number(valor_total.toFixed(2)),\n    qtd_contas: registros.length,\n    ultima_atualizacao,\n    ...conjuntos\n  };\n\n  output.push({ json: saida });\n}\n\n// ===========================================\n// RETORNO FINAL\n// ===========================================\nreturn output;\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        512,
+        272
+      ],
+      "id": "06b9aaef-ebae-4ccf-93b3-704bea057869",
+      "name": "Extração do Grupo Econômico1"
+    },
+    {
+      "parameters": {
+        "content": "## Extração paginada\nBusca de contas e continuação pelo cursor after.",
+        "height": 400,
+        "width": 900,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        32
+      ],
+      "id": "7e69b942-6190-46c3-98e6-83937763c438",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Grupo econômico\nAgrupamento e escolha de referências.",
+        "height": 240,
+        "width": 900,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        464
+      ],
+      "id": "d00acfde-52d4-468f-875c-41593f5d998a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ==============================\n// ETAPA 1 — OBTÉM TODOS OS ITENS\n// ==============================\nconst allItems = $input.all(); // Obtém todos os itens de entrada\nlet flattened = []; // Array para armazenar os itens divididos\n\n// Itera sobre os itens do JSON de entrada\nallItems.forEach(item => {\n  // Itera sobre os resultados do JSON\n  item.json.results.forEach(result => {\n    // Adiciona cada registro como um item separado no array de saída\n    flattened.push({\n      json: result\n    });\n  });\n});\n\n// ==============================\n// ETAPA 2 — SEPARA A CONTA PRINCIPAL\n// ==============================\n\n// Extrai os dados do JSON achatado\nconst data = flattened.map(item => item.json);\n\n// Função para converter números corretamente\nconst parseNum = (val) => {\n  if (val === null || val === undefined || val === \"\") return 0;\n  return Number(val.toString().replace(\",\", \".\")) || 0;\n};\n\n// Campos a considerar\nconst campos = [\n  \"canais_de_coleta_utilizados_hoje_pelo_cliente\",\n  \"cidade\",\n  \"cnpj\",\n  \"complemento\",\n  \"conta_name\",\n  \"cs_da_conta\",\n  \"endereco_completo\",\n  \"estado__uf_\",\n  \"id_do_parceiro_sankhya\",\n  \"plataforma_legado\",\n  \"qual_o_segmento_de_atuacao_da_sua_empresa_\",\n  \"razao_social_da_conta\",\n  \"subsegmento_da_empresa\",\n  \"valor\",\n  \"link_do_contrato_assinado\",\n  \"link_da_proposta\",\n  \"hs_createdate\",\n  \"proprietario_ev\",\n  \"numero_de_clientes_monitorados_por_ciclo\",\n  \"ciclo_de_monitoramento\",\n  \"data_da_ultima_renovacao_dos_creditos\",\n  \"dia_da_renovacao_do_ciclo\",\n  \"guide_sap__codigo_pn_\",\n  \"hs_object_id\",\n  \"recorrencia_de_pagamento\"\n];\n\n// Agrupa registros por grupo econômico\nconst grouped = {};\n\nfor (const record of data) {\n  const props = record.properties;\n  const grupo = props.grupo_economico || \"SEM GRUPO\";\n  if (!grouped[grupo]) grouped[grupo] = [];\n  grouped[grupo].push(record);\n}\n\nconst output = [];\n\nfor (const [grupo, registros] of Object.entries(grouped)) {\n  // Ordena registros por valor (maior primeiro)\n  registros.sort((a, b) => parseNum(b.properties.valor) - parseNum(a.properties.valor));\n\n  // Função auxiliar: pega o primeiro valor não vazio\n  const getComFallback = (campo) => {\n    for (const r of registros) {\n      const v = r.properties[campo];\n      if (v !== undefined && v !== null && v !== \"\") return v;\n    }\n    return null;\n  };\n\n  // Registro base: o de maior valor\n  const base = registros[0];\n  const props = base.properties;\n\n  // Monta campos de referência\n  const referencia = {};\n  for (const c of campos) {\n    referencia[`${c}_referencia`] = props[c] || getComFallback(c) || null;\n  }\n\n  // Soma de valores\n  const valor_total = registros.reduce((acc, r) => acc + parseNum(r.properties.valor), 0);\n\n  // Última atualização (máxima)\n  const ultima_atualizacao = registros.reduce(\n    (max, r) => (r.updatedAt > max ? r.updatedAt : max),\n    registros[0].updatedAt\n  );\n\n  // Campos com valores únicos (listas)\n  const agrupados = {};\n  for (const c of campos) agrupados[c] = new Set();\n\n  for (const r of registros) {\n    const p = r.properties;\n    for (const c of campos) {\n      if (p[c]) agrupados[c].add(p[c]);\n    }\n  }\n\n  // Monta objeto final — 'id' simples, 'grupo_economico' fora do array\n  const conjuntos = Object.fromEntries(\n    Object.entries(agrupados)\n      .filter(([k]) => k !== \"grupo_economico\") // exclui este campo dos arrays\n      .map(([k, v]) => [k, Array.from(v)])\n  );\n\n  // ✅ Concatenação cidade - UF\n  const cidade = props.cidade || getComFallback(\"cidade\") || \"\";\n  const uf = props.estado__uf_ || getComFallback(\"estado__uf_\") || \"\";\n  const cidade_uf = cidade && uf ? `${cidade} - ${uf}` : cidade || uf || null;\n\n  // Estrutura final\n  const saida = {\n    id: base.id, // ✅ apenas o ID da conta principal\n    grupo_economico: grupo, // ✅ valor simples, sem []\n    cidade_uf, // ✅ campo combinado\n    ...referencia,\n    valor_referencia: parseNum(base.properties.valor),\n    valor_total: Number(valor_total.toFixed(2)),\n    qtd_contas: registros.length,\n    ultima_atualizacao,\n    ...conjuntos\n  };\n\n  output.push({ json: saida });\n}\n\n// Retorna a saída final para o n8n\nreturn output;\n"
+      },
+      "id": "35fb1f32-f6c7-42a9-84b8-c304e0e2be80",
+      "name": "Obter Grupo Economico",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        1472
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://magnetcustomer.net/realms/platform/protocol/openid-connect/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \"grant_type\": \"client_credentials\",\n    \"client_id\": \"CONFIGURE_CLIENT_ID\",\n    \"client_secret\": \"CONFIGURE_SECRET_PRIVATELY\",\n    \"scope\": \"offline_access\"\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        464,
+        912
+      ],
+      "id": "afeadc9d-cd5c-4414-a0d0-435d8a18ccfb",
+      "name": "Gerar Token",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://crm.example.invalid/api/organizations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Token empresa').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"fullname\": \"{{ ( $('Set Empresa').item.json.grupo_economico ?? \"\").toUpperCase() }}\", \n  \"doc\": \"{{ $('Set Empresa').item.json.cnpj_referencia }}\",\n  \"state\": \"{{ $('Set Empresa').item.json.estado__uf__referencia }}\",\n  \"city\": \"{{ $('Set Empresa').item.json.cidade_referencia }}\",\n  \"owners\": [\"{{ $('Set Empresa').item.json.cs_da_conta_referencia }}\"],\n  \"createdAt\":\"{{ $('Set Empresa').item.json.hs_createdate_referencia }}\",\n  \"customFields\": [\n    { \"customField\": \"CONFIGURE_ID_017\", \"v\": \"CONFIGURE_LABEL_17\"},\n    { \"customField\": \"CONFIGURE_ID_018\", \"v\": \"CONFIGURE_LABEL_17\" },\n    { \"customField\": \"CONFIGURE_ID_019\", \"v\": \"CONFIGURE_LABEL_17\" }, \n    { \"customField\": \"CONFIGURE_ID_020\", \"v\": \"{{ $('Set Empresa').item.json.razao_social_da_conta_referencia }}\" },\n    { \"customField\": \"CONFIGURE_ID_021\", \"v\": \"{{$('Set Empresa').item.json.qual_o_segmento_de_atuacao_da_sua_empresa__referencia }}\"}, \n    { \"customField\": \"CONFIGURE_ID_022\", \"v\": \"{{$('Set Empresa').item.json.subsegmento_da_empresa_referencia }}\" }, \n    { \"customField\": \"CONFIGURE_ID_023\", \"v\": \"Recorrente\" }, \n    { \"customField\": \"CONFIGURE_ID_024\", \"v\": \"{{ $('Set Empresa').item.json.valor_total }}\" }, \n    { \"customField\": \"CONFIGURE_ID_025\", \"v\": \"{{ $('Set Empresa').item.json.cidade_uf }}\" }, \n    { \"customField\": \"CONFIGURE_ID_026\", \"v\": \"{{ $('Set Empresa').item.json.canais_de_coleta_utilizados_hoje_pelo_cliente_referencia }}\" }, \n    { \"customField\": \"CONFIGURE_ID_027\", \"v\": \"{{ $('Set Empresa').item.json.plataforma_legado_referencia }}\" }, \n    { \"customField\": \"CONFIGURE_ID_028\", \"v\": \"{{ $('Set Empresa').item.json.id }}\" }, \n    { \"customField\": \"CONFIGURE_ID_029\", \"v\": \"CONFIGURE_LABEL_17\" } \n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        544
+      ],
+      "id": "c41711aa-c1c5-4577-89dc-28f45b42713e",
+      "name": "Criar Organização",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "CONFIGURE_ID_031",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_032",
+              "name": "razao_social_da_conta_referencia",
+              "value": "={{ $json.razao_social_da_conta_referencia || $json.properties.razao_social_da_conta }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_033",
+              "name": "cs_da_conta_referencia",
+              "value": "={{\n  (() => {\n    const mapa = {\n      \"1085290136\": \"CONFIGURE_ID_034\", //\"contato@example.com >> contato@example.com\"\n      \"28175354\":   \"CONFIGURE_ID_035\", //\"contato@example.com >> contato@example.com\"\n      \"1836071588\": \"CONFIGURE_ID_036\", //\"contato@example.com >> contato@example.com\"\n      \"182337625\":  \"CONFIGURE_ID_037\", //\"contato@example.com >> contato@example.com\"\n      \"1416292568\": \"CONFIGURE_ID_037\", //\"contato@example.com >> contato@example.com\"\n      \"82061878\":   \"CONFIGURE_ID_037\", //\"contato@example.com >> contato@example.com\"\n      \"492807636\":  \"CONFIGURE_ID_037\", //\"contato@example.com >> contato@example.com\"\n      \"484681635\":  \"CONFIGURE_ID_038\", //\"contato@example.com >> contato@example.com\"\n      \"80602319\":   \"CONFIGURE_ID_039\", //\"contato@example.com >> contato@example.com\"\n      \"83729287\":   \"CONFIGURE_ID_040\", //\"contato@example.com >> contato@example.com\"\n      \"84370501\":   \"CONFIGURE_ID_041\", //\"contato@example.com >> contato@example.com\"\n      \"182337624\":  \"CONFIGURE_ID_042\", //\"contato@example.com >> contato@example.com\"\n    };\n\n    const valor = String($json.cs_da_conta_referencia || $json.properties.cs_da_conta || \"\").trim();\n    return mapa[valor] || valor;\n  })()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_043",
+              "name": "cnpj_referencia",
+              "value": "={{ $json.cnpj_referencia || $json.properties.cnpj }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_044",
+              "name": "grupo_economico",
+              "value": "={{ $json.grupo_economico || $json.properties.grupo_economico }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_045",
+              "name": "cidade_uf",
+              "value": "={{ $json.cidade_uf || $json.properties.cidade}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_046",
+              "name": "canais_de_coleta_utilizados_hoje_pelo_cliente_referencia",
+              "value": "={{\n  (\n    $json.canais_de_coleta_utilizados_hoje_pelo_cliente_referencia || $json.properties.canais_de_coleta_utilizados_hoje_pelo_cliente|| \"\"\n  )\n  // Quebra a string em partes pelo ;\n  .split(\";\")\n  // Faz o mapeamento dos termos\n  .map(canal => {\n    const mapa = {\n      \"E-mail\": \"Email\",\n      \"Entrevista\": \"Entrevista\",\n      \"InApp\": \"APP\",\n      \"Outro\": \"Outro\",\n      \"Papel\": \"Papel\",\n      \"QR Code\": \"QR code\",\n      \"SMS\": \"SMS\",\n      \"Telefone\": \"Telefônica\",\n      \"Totem\": \"Totem\",\n      \"WhatsApp\": \"WhatsApp\",\n      \"Widget\": \"Widget\"\n    };\n    const canalLimpo = canal.trim();\n    return mapa[canalLimpo] || canalLimpo;\n  })\n  // Junta de volta os valores formatados\n  .join(\" \")\n}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_047",
+              "name": "cidade_referencia",
+              "value": "={{ $json.cidade_referencia || $json.properties.cidade}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_048",
+              "name": "estado__uf__referencia",
+              "value": "={{ $json.estado__uf__referencia || $json.estado__uf__referencia}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_049",
+              "name": "complemento_referencia",
+              "value": "={{ $json.complemento_referencia || $json.complemento_referencia}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_050",
+              "name": "conta_name_referencia",
+              "value": "={{ $json.conta_name_referencia || $json.properties.conta_name}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_051",
+              "name": "endereco_completo_referencia",
+              "value": "={{ $json.endereco_completo_referencia || $json.endereco_completo_referencia}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_052",
+              "name": "id_do_parceiro_sankhya_referencia",
+              "value": "={{ $json.id_do_parceiro_sankhya_referencia || $json.properties.id_do_parceiro_sankhya}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_053",
+              "name": "plataforma_legado_referencia",
+              "value": "={{ $json.plataforma_legado_referencia || $json.properties.plataforma_legado_referencia}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_054",
+              "name": "qual_o_segmento_de_atuacao_da_sua_empresa__referencia",
+              "value": "={{ ($json.qual_o_segmento_de_atuacao_da_sua_empresa__referencia || $json.qual_o_segmento_de_atuacao_da_sua_empresa__referencia)\n    .toString()\n    .replace(/[\\r\\n]+/g, \" \")\n    .trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_055",
+              "name": "subsegmento_da_empresa_referencia",
+              "value": "={{ $json.subsegmento_da_empresa_referencia || $json.properties.subsegmento_da_empresa}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_056",
+              "name": "valor_total",
+              "value": "={{ $json.valor_total || $json.properties.valor || $json.valor_total }}",
+              "type": "number"
+            },
+            {
+              "id": "CONFIGURE_ID_057",
+              "name": "hs_createdate_referencia",
+              "value": "={{ \n  $json.hs_createdate_referencia \n    ? new Date($json.hs_createdate_referencia).toISOString().slice(0, 10)\n    : new Date($json.createdAt).toISOString().slice(0, 10)\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        112,
+        544
+      ],
+      "id": "30c045c6-a902-4690-b7d9-1872917eddbf",
+      "name": "Set Empresa"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 🔹 Busca o grupo econômico do Set Empresa\nconst grupoEmpresa = $('Set Empresa').first().json.grupo_economico;\n\nif (!grupoEmpresa) {\n  return [{\n    json: { erro: \"Grupo econômico não encontrado em Set Empresa\" }\n  }];\n}\n\n// 🔹 Busca todos os registros do node IF6\nconst allNodes = $('IF6').all();\n\nif (!allNodes || allNodes.length === 0) {\n  return [{\n    json: { erro: \"Nenhum registro encontrado no node IF6\" }\n  }];\n}\n\n// 🔹 Monta uma lista com todos os registros dentro de results[]\nconst registros = allNodes\n  .flatMap(node => node.json?.results || []);\n\n// 🔹 Filtra corretamente usando results[].properties.grupo_economico\nconst encontrados = registros.filter(reg => {\n  const grupo = reg.properties?.grupo_economico;\n  if (!grupo) return false;\n  return grupo.trim().toUpperCase() === grupoEmpresa.trim().toUpperCase();\n});\n\n// 🔹 Se encontrou registros\nif (encontrados.length > 0) {\n  return encontrados.map(reg => ({\n    json: {\n      id: reg.id,\n      ...reg.properties,\n      grupo_economico_procurado: grupoEmpresa\n    }\n  }));\n}\n\n// 🔹 Se não encontrou\nreturn [{\n  json: {\n    aviso: \"Nenhum registro encontrado com o grupo econômico\",\n    grupo_procurado: grupoEmpresa,\n    total_registros_all: registros.length\n  }\n}];\n"
+      },
+      "id": "d455f967-ebbb-4f60-bb59-1bebfbd66d69",
+      "name": "Obetem negócios vinculados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        608,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Organização\nCriação do grupo econômico no destino.",
+        "height": 400,
+        "width": 900,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        752
+      ],
+      "id": "4c8301a2-fc81-4597-9a1e-9a7334fe169c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "CONFIGURE_ID_061",
+              "name": "organizations_id",
+              "value": "={{ $('Criar Organização').item.json._id }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_062",
+              "name": "id_hubspot",
+              "value": "={{ $hs_object_id ||$json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_063",
+              "name": "conta_name",
+              "value": "={{ $json.conta_name || $json.properties.conta_name }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_064",
+              "name": "cnpj",
+              "value": "={{ $json.cnpj || $json.properties.cnpj }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_065",
+              "name": "canais_de_coleta_que_o_cliente_pretende_utilizar",
+              "value": "={{\n  (\n   $json.canais_de_coleta_que_o_cliente_pretende_utilizar || $json.properties.canais_de_coleta_que_o_cliente_pretende_utilizar || \"\"\n  )\n  // Quebra a string em partes pelo ;\n  .split(\";\")\n  // Faz o mapeamento dos termos\n  .map(canal => {\n    const mapa = {\n      \"E-mail\": \"Email\",\n      \"Entrevista\": \"Entrevista\",\n      \"InApp\": \"APP\",\n      \"Outro\": \"Outro\",\n      \"Papel\": \"Papel\",\n      \"QR Code\": \"QR code\",\n      \"SMS\": \"SMS\",\n      \"Telefone\": \"Telefônica\",\n      \"Totem\": \"Totem\",\n      \"WhatsApp\": \"WhatsApp\",\n      \"Widget\": \"Widget\"\n    };\n    const canalLimpo = canal.trim();\n    return mapa[canalLimpo] || canalLimpo;\n  })\n  // Junta de volta os valores formatados\n  .join(\" \")\n}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_066",
+              "name": "canais_de_coleta_utilizados_hoje_pelo_cliente",
+              "value": "={{\n  (\n   $json.canais_de_coleta_que_o_cliente_pretende_utilizar || $json.properties.canais_de_coleta_utilizados_hoje_pelo_cliente || \"\"\n  )\n  // Quebra a string em partes pelo ;\n  .split(\";\")\n  // Faz o mapeamento dos termos\n  .map(canal => {\n    const mapa = {\n      \"E-mail\": \"Email\",\n      \"Entrevista\": \"Entrevista\",\n      \"InApp\": \"APP\",\n      \"Outro\": \"Outro\",\n      \"Papel\": \"Papel\",\n      \"QR Code\": \"QR code\",\n      \"SMS\": \"SMS\",\n      \"Telefone\": \"Telefônica\",\n      \"Totem\": \"Totem\",\n      \"WhatsApp\": \"WhatsApp\",\n      \"Widget\": \"Widget\"\n    };\n    const canalLimpo = canal.trim();\n    return mapa[canalLimpo] || canalLimpo;\n  })\n  // Junta de volta os valores formatados\n  .join(\" \")\n}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_067",
+              "name": "cidade",
+              "value": "={{ $json.cidade }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_068",
+              "name": "complemento",
+              "value": "={{ ($json.complemento || $json.properties?.complemento || \"\") }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_069",
+              "name": "cs_da_conta",
+              "value": "={{\n  (() => {\n    const mapa = {\n      \"1085290136\": \"CONFIGURE_ID_034\", //\"contato@example.com >> contato@example.com\"\n      \"28175354\":   \"CONFIGURE_ID_035\", //\"contato@example.com >> contato@example.com\"\n      \"1836071588\": \"CONFIGURE_ID_036\", //\"contato@example.com >> contato@example.com\"\n      \"182337625\":  \"CONFIGURE_ID_037\", //\"contato@example.com >> contato@example.com\"\n      \"1416292568\": \"CONFIGURE_ID_037\", //\"contato@example.com >> contato@example.com\"\n      \"82061878\":   \"CONFIGURE_ID_037\", //\"contato@example.com >> contato@example.com\"\n      \"492807636\":  \"CONFIGURE_ID_037\", //\"contato@example.com >> contato@example.com\"\n      \"484681635\":  \"CONFIGURE_ID_038\", //\"contato@example.com >> contato@example.com\"\n      \"80602319\":   \"CONFIGURE_ID_039\", //\"contato@example.com >> contato@example.com\"\n      \"83729287\":   \"CONFIGURE_ID_040\", //\"contato@example.com >> contato@example.com\"\n      \"84370501\":   \"CONFIGURE_ID_041\", //\"contato@example.com >> contato@example.com\"\n      \"182337624\":  \"CONFIGURE_ID_042\", //\"contato@example.com >> contato@example.com\"\n    };\n\n    const valor = String( $json.cs_da_conta || $json.properties.cs_da_conta).trim();\n    return mapa[valor] || valor;\n  })()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_070",
+              "name": "data_de_inicio_da_vigencia",
+              "value": "={{ ($json.data_de_inicio_da_vigencia || json.properties.data_de_inicio_da_vigencia) }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_071",
+              "name": "data_de_fim_da_vigencia",
+              "value": "={{ ( $json.data_de_fim_da_vigencia || $json.properties.data_de_fim_da_vigencia )}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_072",
+              "name": "estado__uf_",
+              "value": "={{ ($json.estado__uf_) }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_073",
+              "name": "grupo_economico",
+              "value": "={{ $json.grupo_economico || $json.properties.grupo_economico }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_074",
+              "name": "guide_legado",
+              "value": "={{ $json.guide_legado ||$json.properties.guide_legado }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_075",
+              "name": "hs_createdate",
+              "value": "={{ new Date( $json.hs_createdate ||$json.properties.hs_createdate).toISOString().slice(0, 10) }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_076",
+              "name": "ID_Sankhya",
+              "value": "={{$json.id_do_parceiro_sankhya || $json.properties.id_do_parceiro_sankhya }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_077",
+              "name": "link_da_proposta",
+              "value": "={{ $json.link_do_contrato_assinado ?? $json.properties?.link_da_proposta ?? null }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_078",
+              "name": "link_do_contrato_assinado",
+              "value": "={{ $json.link_do_contrato_assinado ?? $json.properties?.link_do_contrato_assinado ?? \"https://drive.google.com/drive/folders/1ngZl2XDHd0Ko996h1mvteJk0iGDIT6f_\" }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_079",
+              "name": "logradouro",
+              "value": "={{ $json.logradouro ?? $json.properties?.logradouro ?? null }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_080",
+              "name": "pulse",
+              "value": "={{ $json.pulse ??$json.properties.pulse }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_081",
+              "name": "motivo_de_pulse",
+              "value": "={{$json.motivo_de_pulse ??$json.properties.motivo_de_pulse }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_082",
+              "name": "data_de_atualizacao_do_pulse",
+              "value": "={{$json.data_de_atualizacao_do_pulse ?? $json.properties.data_de_atualizacao_do_pulse }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_083",
+              "name": "plataforma_legado",
+              "value": "={{$json.plataforma_legado ?? $json.properties.plataforma_legado }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_084",
+              "name": "professional_service_contratado",
+              "value": "={{$json.professional_service_contratado ?? $json.properties.professional_service_contratado }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_085",
+              "name": "proprietario_ev",
+              "value": "={{ $json.proprietario_ev }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_086",
+              "name": "Segmento",
+              "value": "={{ ($json.qual_o_segmento_de_atuacao_da_sua_empresa_ ?? $json.properties.qual_o_segmento_de_atuacao_da_sua_empresa_)\n    .toString()\n    .replace(/[\\r\\n]+/g, \" \")\n    .trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_087",
+              "name": "subsegmento_da_empresa",
+              "value": "={{ ($json.subsegmento_da_empresa ?? $json.properties.subsegmento_da_empresa)\n    .toString()\n    .replace(/[\\r\\n]+/g, \" \")\n    .trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_088",
+              "name": "Razao_social_da_conta",
+              "value": "={{ $json.razao_social_da_conta ?? $json.properties.razao_social_da_conta }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_089",
+              "name": "site",
+              "value": "={{$json.site ?? $json.properties.site }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_090",
+              "name": "Valor",
+              "value": "={{$json.valor || \"0\"}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_091",
+              "name": "Valor_do_pagamento_no_ultimo_faturamento",
+              "value": "={{$json.valor_do_pagamento_no_ultimo_faturamento ?? $json.properties.valor_do_pagamento_no_ultimo_faturamento }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_092",
+              "name": "Vigencia_do_contrato__em_meses_",
+              "value": "={{$json.vigencia_do_contrato__em_meses_ ?? $json.properties.vigencia_do_contrato__em_meses_ }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_093",
+              "name": "numero_de_clientes_monitorados_por_ciclo",
+              "value": "={{$json.numero_de_clientes_monitorados_por_ciclo ?? $json.properties.numero_de_clientes_monitorados_por_ciclo }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_094",
+              "name": "principal_desafio_para_alcancar_objetivo",
+              "value": "={{$json.principal_desafio_para_alcancar_objetivo ?? $json.properties?.principal_desafio_para_alcancar_objetivo ?? \"Equilibrar a integração entre sistemas, a padronização de processos e o engajamento das equipes para gerar uma visão única do cliente, parceiros e colaboradores. O maior desafio é transformar dados de clientes em ações práticas que impactem positivamente a jornada e os resultados.\" }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_095",
+              "name": "metricas_que_a_empresa_pretende_acompanhar",
+              "value": "={{$json.metricas_que_a_empresa_pretende_acompanhar ?? $json.properties?.metricas_que_a_empresa_pretende_acompanhar ?? \"NPS, CSAT\"}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_096",
+              "name": "objetivo_principal_com_a_plataforma",
+              "value": "={{$json.objetivo_principal_com_a_plataforma ?? $json.properties?.objetivo_principal_com_a_plataforma ?? \"Garantir que processos, pessoas e sistemas estejam alinhados para oferecer uma experiência fluida, previsível e de alto valor ao cliente. O objetivo é transformar a operação em uma estrutura orientada a dados e relacionamento, promovendo satisfação e fidelização contínuas.\"}}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_097",
+              "name": "ciclo_de_monitoramento",
+              "value": "={{$json.ciclo_de_monitoramento ??$json.properties.ciclo_de_monitoramento }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_098",
+              "name": "data_da_ultima_renovacao_dos_creditos",
+              "value": "={{$json.data_da_ultima_renovacao_dos_creditos ?? $json.properties?.data_da_ultima_renovacao_dos_creditos ?? null }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_099",
+              "name": "numero_de_clientes_monitorados_por_ciclo",
+              "value": "={{ $json.numero_de_clientes_monitorados_por_ciclo ?? $json.properties?.numero_de_clientes_monitorados_por_ciclo ?? null  }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_100",
+              "name": "dia_da_renovacao_do_ciclo",
+              "value": "={{ $json.dia_da_renovacao_do_ciclo ?? $json.properties?.dia_da_renovacao_do_ciclo  ?? null }}",
+              "type": "string"
+            },
+            {
+              "id": "CONFIGURE_ID_101",
+              "name": "recorrencia_de_pagamento",
+              "value": "={{ $json.recorrencia_de_pagamento ??$json.properties?.recorrencia_de_pagamento ?? \"Mensal\"}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -96,
+        832
+      ],
+      "id": "071fbaa5-a438-473b-8bff-27c2ded8ceb9",
+      "name": "Set Deal"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=CONFIGURE_SECRET_PRIVATELY",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"contents\":[{\"parts\":[{\"text\":\"Gere uma descrição empresarial em até 1000 caracteres usando somente os dados recebidos. Não afirme ter pesquisado fontes externas. Use HTML simples e não invente fatos. Empresa: {{ $(\\\"Set Deal\\\").item.json.conta_name }}. Segmento: {{ $(\\\"Set Deal\\\").item.json.Segmento }}. Dados cadastrais disponíveis: {{ JSON.stringify($(\\\"ObterDados CNPJ\\\").item.json) }}.\"}]}]}",
+        "options": {}
+      },
+      "id": "9dc3789f-d40b-4585-af40-77f79f7f1af7",
+      "name": "Criar descrição Simplificada",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        304,
+        800
+      ],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://crm.example.invalid/api/deals",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Gerar Token').item.json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={   \n   \"staff\": \"{{ $('Set Deal').item.json.cs_da_conta }}\",\n   \"participants\":[\"{{ $('Set Deal').item.json.cs_da_conta }}\"],\n   \"observers\":[\"CONFIGURE_ID_037\"],\n   \"pipeline\":\"CONFIGURE_ID_104\",\n   \"stage\":\"CONFIGURE_ID_105\",\n   \"organization\":\"{{ $('Set Deal').item.json.organizations_id}}\",\n   \"title\": \"{{ ($('Set Deal').item.json.conta_name ?? \"\").toUpperCase() }}\",\n   \"amount\": {{ $('Set Deal').item.json.Valor}},\n   \"observation\":\"{{ ($('Criar descrição Simplificada').item.json.candidates[0].content.parts[0].text ?? \"\") .replace(/\"/g, \"\") .replace(/[\\n\\r\\t\\\\]+/g, \" \").replace(/\\s{2,}/g, \" \").replace(/^[\"']+|[\"']+$/g, \"\").trim()}}\",\n   \"customFields\":[      \n       {\n         \"customField\":\"CONFIGURE_ID_106\",         \n         \"k\":\"Data de início da vigência\",\n         \"v\":\"{{ $('Set Deal').item.json.data_de_inicio_da_vigencia }}\"\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_107\",\n         \"k\":\"Data do fim da vigência\",\n         \"v\":\"{{ $('Set Deal').item.json.data_de_fim_da_vigencia }}\"\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_108\",\n         \"k\":\"Status de Pulse\",\n         \"v\":[{\"value\":\" {{$('Set Deal').item.json.pulse}}\"}]\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_109\",\n         \"k\":\"Motivo de Pulse\",\n         \"v\":[\n            {\n               \"value\":\" {{$('Set Deal').item.json.motivo_de_pulse}}\"\n            }\n         ]\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_110\",\n         \"k\":\"Segmento\",\n         \"v\":[\n            {\n               \"value\":\"{{ $('Set Deal').item.json.Segmento }}\"\n            }\n         ]\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_111\",\n         \"k\":\"Sub-segmento\",\n         \"v\":[\n            {\n               \"value\":\"{{ $('Set Deal').item.json.subsegmento_da_empresa }}\"\n            }\n         ]\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_112\",\n         \"k\":\"cnpj\",\n         \"v\":\"{{ $('Set Deal').item.json.cnpj }}\"\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_113\",\n         \"k\":\"cidade-e-estado\",\n         \"v\":\"{{ $('Set Deal').item.json.cidade || $('ObterDados CNPJ').item.json.municipio}} - {{ $('Set Deal').item.json.estado__uf_ || $('ObterDados CNPJ').item.json.uf}}\"\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_114\",\n         \"k\":\"mrr-receita-recorrente-mensal\",\n         \"v\":\"{{ $('Set Deal').item.json.Valor}}\"\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_115\",\n         \"k\":\"produtos-contratados\",\n         \"v\":[\n            {\n               \"value\":\"{{ $('Set Deal').item.json.plataforma_legado}}\"\n            }\n         ]\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_116\",\n         \"k\":\"plano-contratado\",\n         \"v\":[\n            {\n               \"value\":\"CONFIGURE_LABEL_17\"\n            }\n         ]\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_117\",\n         \"k\":\"guide_legado\",\n         \"v\":\"{{ $('Set Deal').item.json.guide_legado}}\"\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_118\",\n         \"k\":\"id_sankhya\",\n         \"v\":\"{{ $('Set Deal').item.json.ID_Sankhya}}\"\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_119\",\n         \"k\":\"kam-responsavel\",\n         \"v\":[\n            {\n               \"value\":\"CONFIGURE_LABEL_17\"\n            }\n         ]\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_120\",\n         \"k\":\"cs-assistente\",\n         \"v\":[\n            {\n               \"value\":\"CONFIGURE_LABEL_17\"\n            }\n         ]\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_121\",\n         \"k\":\"id_hubspot\",\n         \"v\":\"{{ $('Set Deal').item.json.id_hubspot }}\"\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_122\",\n         \"k\":\"link-do-contrato-assinado\",\n         \"v\":\"{{ $('Set Deal').item.json.link_do_contrato_assinado }}\"\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_123\",         \n         \"k\":\"numero-de-clientes-monitorados-por-ciclo\",\n         \"v\":\"{{ $('Set Deal').item.json.numero_de_clientes_monitorados_por_ciclo }}\"\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_124\",\n         \"k\":\"ciclo-de-monitoramento\",\n         \"v\":[\n            {\n               \"value\":\"{{ $('Set Deal').item.json.ciclo_de_monitoramento }}\"\n            }\n         ]\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_125\",         \n         \"k\":\"data-da-ultima-renovacao-dos-creditos\",\n         \"v\":\"{{ $('Set Deal').item.json.data_da_ultima_renovacao_dos_creditos }}\"\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_126\",\n         \"k\":\"dia-da-renovacao-do-ciclo\",\n         \"v\":[\n            {\n               \"value\":\"{{ $('Set Deal').item.json.dia_da_renovacao_do_ciclo }}\"\n            }\n         ]\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_127\",\n         \"k\":\"recorrencia-de-pagamento\",\n         \"v\":[\n            {\n               \"value\":\"{{ $('Set Deal').item.json.recorrencia_de_pagamento }}\"\n            }\n         ]\n      },\n      {\n         \"customField\":\"CONFIGURE_ID_128\",\n         \"k\":\"equipe\",\n         \"v\":[\n            {\n               \"value\":\"CONFIGURE_LABEL_17\"\n            }\n         ]\n      }\n  ]\n}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        912
+      ],
+      "id": "2995a00c-08ba-4b2c-92e4-a2976298fcdf",
+      "name": "Criar Deal",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Usando inputData em vez de $()\nconst inputData = $input.all();\nlet engagements = [];\n\n// Verifica se há dados de entrada\nif (inputData && inputData.length > 0) {\n  engagements = inputData[0]?.json?.associations?.contacts?.results || [];\n}\n\n// Pega apenas os últimos 5 registros (ajuste conforme necessário)\nconst last12Engagements = engagements.slice(-5);\n\n// Retorna os registros, ou \"SemAssociacao\" se não houver nenhum\nif (last12Engagements.length === 0) {\n  return [{ json: { id: \"SemAssociacao\" } }];\n}\n\nreturn last12Engagements.map(c => ({\n  json: { id: c.id }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        1264
+      ],
+      "id": "ebf09d00-8f71-41ea-a193-85e122a886cf",
+      "name": "Separar Contatos"
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": "={{ $('Loop Over Items2').context.done }}"
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -48,
+        1504
+      ],
+      "id": "0f7bc1c2-e306-434e-b8d0-e1c30f1efb3e",
+      "name": "Loop Over Items2"
+    },
+    {
+      "parameters": {
+        "content": "## Negócios e enriquecimento\nConsulta CNPJ e descrição assistida por Gemini.",
+        "height": 520,
+        "width": 900,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        1184
+      ],
+      "id": "ba64a788-a940-4cea-a0c9-98f6f2882153",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.hubapi.com/crm/v3/objects/contacts/{{ $json.id }}?properties=mobilephone,jobtitle,email,firstname,lastname,ip_state,state,ip_city,cargo_do_contato,hs_whatsapp_phone_number,phone",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        368,
+        1504
+      ],
+      "id": "8d6cce97-4673-43fd-86d8-a0ee810a513d",
+      "name": "Obter Contato HubSpot",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://crm.example.invalid/api/contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Gerar Token').item.json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"lifeCycle\": \"customer\",\n    \"type\": \"physical\",    \n    \"fullname\": \"{{ $('Obter Contato HubSpot').item.json.properties.firstname }} {{ $('Obter Contato HubSpot').item.json.properties.lastname }}\",\n    \"email\": \"{{ $('Obter Contato HubSpot').item.json.properties.email }}\",\n    \"state\":\"{{ $('Obter Contato HubSpot').item.json.properties.p_state || $('Obter Contato HubSpot').item.json.properties.state }}\",\n    \"city\":\"{{ $('Obter Contato HubSpot').item.json.properties.ip_city }}\", \"phones\": [\n                {\n                \"typePhone\": \"cellphone\",\n                \"ddi\": \"+55\",\n                \"number\": \"{{ $('Obter Contato HubSpot').item.json.properties.mobilephone ||$('Obter Contato HubSpot').item.json.properties.hs_whatsapp_phone_number }}\"\n                }\n        ],\n        \"customFields\": [\n            { \"customField\": \"CONFIGURE_ID_134\", \"v\": \"{{ $('Obter Contato HubSpot').item.json.id }}\"}, \n            { \"customField\": \"CONFIGURE_ID_135\", \"v\": \"{{ $('Obter Contato HubSpot').item.json.properties.cargo_do_contato || $('Obter Contato HubSpot').item.json.properties.jobtitle}}\"} \n        ]\n}\n\n\n\n\n   ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        608,
+        1488
+      ],
+      "id": "42678bde-0a7d-4573-a1bb-44f30152fa34",
+      "name": "Criar Contato",
+      "onError": "continueRegularOutput",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://crm.example.invalid/api/organizations/{{ $('Set Deal').item.json.organizations_id}}/contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Gerar Token').item.json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"contacts\":[\"{{ $json._id }}\"]}  ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        608,
+        1280
+      ],
+      "id": "c5ba9452-fa32-4ee8-99ed-3c449e2ca610",
+      "name": "UpDate - Organizations",
+      "onError": "continueRegularOutput",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Notas da jornada\nRecorte dos registros e formatação HTML.",
+        "height": 520,
+        "width": 980,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        880,
+        608
+      ],
+      "id": "bd3973db-9d53-44e2-8a8c-2a6a793f49aa",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Reorganize o conteúdo recebido em HTML legível para importação em CRM. Preserve os fatos e não invente informações. Retorne somente o HTML final, sem cercas de código ou explicações. A validação e a serialização devem ocorrer fora do modelo.\n\nE-mail recebido:\nDe: {{ $json.metadata.from?.firstName ?? \"\" }} — {{ $json.metadata.from?.email ?? \"\" }}\nPara: {{ ($json.metadata.to ?? []).map(e => e.email).join(\", \") }}\nCC: {{ ($json.metadata.cc ?? []).map(e => e.email).join(\", \") }}\nConteúdo: {{ $(\"HubSpot_Email\").item.json.engagement.bodyPreview }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1568,
+        704
+      ],
+      "id": "21cf05dc-94e0-428e-bece-06254d2719a4",
+      "name": "AI Agent",
+      "onError": "continueRegularOutput",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        928
+      ],
+      "id": "4be3798c-f170-48b9-acb7-3c66334541b6",
+      "name": "Google Gemini Chat Model",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://crm.example.invalid/api/treatments",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Gerar Token').item.json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={   \n  \"deal\": \"{{ $('Criar Deal').item.json.id }}\",\n   \"organization\":\"{{ $('Set Deal').item.json.organizations_id}}\",\n  \"staff\": \"{{ $('Set Deal').item.json.cs_da_conta }}\",\n   \"nameType\":\"E-mail\",\n   \"type\":\"CONFIGURE_ID_141\",\n  \"subject\":\"{{\n  ($('HubSpot_Email').item.json.metadata.subject || \"\")\n    .toString()\n    .replace(/\\t/g, ' ')                         // remove TAB\n    .replace(/\\r?\\n|\\r/g, ' ')                   // remove quebras de linha\n    .replace(/[\\u0000-\\u001F\\u007F-\\u009F]/g, '') // remove caracteres de controle\n    .replace(/\"/g, '')                           // remove aspas duplas\n    .replace(/\\s+/g, ' ')                        // colapsa espaços múltiplos\n    .trim()                                      // limpa espaços no início e no fim\n}}\",\n   \"description\":\"{{ \n  ($json.output ?? \"\")\n    .toString()\n    .replace(/```html|```/g, \"\")      // remove blocos de código markdown\n    .replace(/[\\n\\r\\t]+/g, \" \")       // remove quebras e tabs\n    .replace(/\\s{2,}/g, \" \")          // colapsa múltiplos espaços\n    .replace(/\\\\+/g, \"\\\\\\\\\")          // escapa barras invertidas\n    .replace(/\"/g, \"'\")               // troca aspas duplas por simples\n    .replace(/\\bbody\\b/gi, \"\")        // remove a palavra BODY (maiúscula/minúscula)\n    .replace(/\\u0000/g, \"\")           // remove caracteres nulos\n    .trim()\n|| ($('HubSpot_Email').item.json.engagement.bodyPreview ?? \"\")\n    .toString()\n    .replace(/```html|```/g, \"\")     // remove blocos de código markdown\n    .replace(/[\\n\\r\\t]+/g, \" \")      // remove quebras e tabs\n    .replace(/\\s{2,}/g, \" \")         // colapsa múltiplos espaços\n    .replace(/\\\\/g, \"\\\\\\\\\")          // escapa barras invertidas\n    .replace(/\"/g, \"'\")              // troca aspas duplas por simples\n    .replace(/\\u0000/g, \"\")          // remove caracteres nulos\n    .trim()}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1520,
+        912
+      ],
+      "id": "228ed4ac-035e-4d50-9b35-9437ada34432",
+      "name": "UpDate - Deal1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "batchSize": "=1",
+        "options": {
+          "reset": "={{ $('Loop 1').context.done }}"
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        112,
+        896
+      ],
+      "id": "3a1e6894-cc38-499c-8fd6-0f50602d5896",
+      "name": "Loop 1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": "={{ $('Loop Over Items1').context.done }}"
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        928,
+        928
+      ],
+      "id": "eff18982-a910-4fcd-8a32-988b2562ce4d",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.hubapi.com/crm/v3/objects/CONFIGURE_ID_007/{{ $('Set Deal').item.json.id_hubspot }}?associations=contact&associations=email&associations=notes&associations=meetings",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "7c5c3b44-06e8-441b-88c5-95bd1b8f528a",
+      "name": "Obter Associações 1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1088,
+        704
+      ],
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## E-mails e reuniões\nAgentes independentes para preparar o histórico.",
+        "height": 520,
+        "width": 980,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        880,
+        32
+      ],
+      "id": "bae72e2b-86de-4982-803d-548471fff244",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "resource": "engagement",
+        "operation": "get",
+        "engagementId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        1264,
+        352
+      ],
+      "id": "532e01c8-7e0c-415b-9450-51d8573392c9",
+      "name": "HubSpot1",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Reorganize o conteúdo recebido em HTML legível para importação em CRM. Preserve os fatos e não invente informações. Retorne somente o HTML final, sem cercas de código ou explicações. A validação e a serialização devem ocorrer fora do modelo.\n\nNota recebida: {{ $(\"HubSpot1\").item.json.engagement.bodyPreview }}\nHTML de origem: {{ $(\"HubSpot1\").item.json.engagement.bodyPreviewHtml }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1568,
+        128
+      ],
+      "id": "33c36f28-cb21-44ef-a093-3d4a5c57d6b3",
+      "name": "AI Agent1",
+      "onError": "continueRegularOutput",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        368
+      ],
+      "id": "c06a82e7-c442-45d8-98dd-7cce52e42888",
+      "name": "Google Gemini Chat Model1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://crm.example.invalid/api/observations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Gerar Token').item.json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{\n  \"staff\": \"{{ $('Set Deal').item.json.cs_da_conta }}\",\n  \"deal\": \"{{ $('Criar Deal').item.json.id }}\",\n   \"organization\":\"{{ $('Set Deal').item.json.organizations_id}}\",\n  \"observation\": \"{{ \n  ($json.output ?? \"\")\n    .toString()\n    .replace(/```html|```/g, \"\")     // remove blocos de código markdown\n    .replace(/[\\n\\r\\t]+/g, \" \")      // remove quebras e tabs\n    .replace(/\\s{2,}/g, \" \")         // colapsa múltiplos espaços\n    .replace(/\\\\/g, \"\\\\\\\\\")          // escapa barras invertidas\n    .replace(/\"/g, \"'\")              // troca aspas duplas por simples\n    .replace(/\\u0000/g, \"\")          // remove caracteres nulos\n    .trim()\n||   ($('HubSpot1').item.json.engagement.bodyPreview ?? \"\")\n    .toString()\n    .replace(/```html|```/g, \"\")     // remove blocos de código markdown\n    .replace(/[\\n\\r\\t]+/g, \" \")      // remove quebras e tabs\n    .replace(/\\s{2,}/g, \" \")         // colapsa múltiplos espaços\n    .replace(/\\\\/g, \"\\\\\\\\\")          // escapa barras invertidas\n    .replace(/\"/g, \"'\")              // troca aspas duplas por simples\n    .replace(/\\u0000/g, \"\")          // remove caracteres nulos\n    .trim()}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        352
+      ],
+      "id": "f30bed8d-0aff-47db-bab0-44a6531138ac",
+      "name": "UpDate - Deal2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Usando inputData em vez de $()\nconst inputData = $input.all();\nlet engagements = [];\n\n// Verifica se há dados de entrada\nif (inputData && inputData.length > 0) {\n  engagements = inputData[0]?.json?.associations?.notes?.results || [];\n}\n\n// Pega apenas os últimos 5 registros (ajuste conforme necessário)\nconst last12Engagements = engagements.slice(-10);\n\n// Retorna os registros, ou \"SemAssociacao\" se não houver nenhum\nif (last12Engagements.length === 0) {\n  return [{ json: { id: \"SemAssociacao\" } }];\n}\n\nreturn last12Engagements.map(c => ({\n  json: { id: c.id }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1232,
+        128
+      ],
+      "id": "517d1adb-3414-420d-9936-83750997aa62",
+      "name": "Separar Notes1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": "={{ $('Loop Over Items3').context.done }}"
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        912,
+        352
+      ],
+      "id": "f99926c8-10a4-4ad7-b45f-3ac28fef5d85",
+      "name": "Loop Over Items3"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.hubapi.com/crm/v3/objects/CONFIGURE_ID_007/{{ $('Set Deal').item.json.id_hubspot }}?associations=contact&associations=email&associations=notes&associations=meetings",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "145bcc16-0318-46fa-8db6-10e3f1b35df5",
+      "name": "Obter Associações ",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1072,
+        128
+      ],
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "amount": 10,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        1264
+      ],
+      "id": "50caadd5-f94e-48b7-8e94-489fef095577",
+      "name": "Wait2",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "amount": 12,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1104,
+        352
+      ],
+      "id": "ceba6335-d2a1-41f3-ae3a-2cfc9a468c12",
+      "name": "Wait3"
+    },
+    {
+      "parameters": {
+        "amount": 10,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        912,
+        128
+      ],
+      "id": "649fef94-4a3c-4e00-abee-855e49ae514f",
+      "name": "Wait4"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.hubapi.com/crm/v3/objects/CONFIGURE_ID_007/{{$('Set Deal').item.json.id_hubspot }}?associations=contact&associations=email&associations=notes&associations=meetings",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "38c407c9-2551-44bd-b92b-0e4212d02517",
+      "name": "Obter Associações do Negócio- Contato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        80,
+        1264
+      ],
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "amount": 11,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        1504
+      ],
+      "id": "a9196ef4-c9f6-42e0-a50c-b9f0e1f0dc26",
+      "name": "Wait5"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "resource": "engagement",
+        "operation": "get",
+        "engagementId": {
+          "__rl": true,
+          "value": "={{$json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        1312,
+        912
+      ],
+      "id": "71b3678c-868c-4810-ae62-5a81674d45e7",
+      "name": "HubSpot_Email",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "amount": 12,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        928
+      ],
+      "id": "352e1291-df2a-4f65-ae11-3e8017347c6d",
+      "name": "Wait"
+    },
+    {
+      "parameters": {
+        "amount": 10,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        928,
+        704
+      ],
+      "id": "2628f958-fcee-47f1-aace-9b4e325a3b55",
+      "name": "Wait6",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://magnetcustomer.net/realms/platform/protocol/openid-connect/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \"grant_type\": \"client_credentials\",\n    \"client_id\": \"CONFIGURE_CLIENT_ID\",\n    \"client_secret\": \"CONFIGURE_SECRET_PRIVATELY\",\n    \"scope\": \"offline_access\"\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        544
+      ],
+      "id": "a4ba658d-2d1d-4cd4-a63c-1239a31e2586",
+      "name": "Token empresa",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Contatos e retorno à origem\nCriação, vínculo e marcador de migração.",
+        "height": 520,
+        "width": 980,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        880,
+        1184
+      ],
+      "id": "2f159652-38b7-48da-84ed-f504883f3653",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Reorganize o conteúdo recebido em HTML legível para importação em CRM. Preserve os fatos e não invente informações. Retorne somente o HTML final, sem cercas de código ou explicações. A validação e a serialização devem ocorrer fora do modelo.\n\nRegistro de reunião: {{ $(\"HubSpot_meetings\").item.json.engagement.bodyPreview }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1552,
+        1280
+      ],
+      "id": "e3cb923c-c52b-4c1e-9459-8173f1e80996",
+      "name": "AI Agent2",
+      "onError": "continueRegularOutput",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1728,
+        1552
+      ],
+      "id": "5e2508c8-f96e-45b1-bf97-86cd78998126",
+      "name": "Google Gemini Chat Model2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://crm.example.invalid/api/treatments",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Gerar Token').item.json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={   \n  \"deal\": \"{{ $('Criar Deal').item.json.id }}\",\n   \"organization\":\"{{ $('Set Deal').item.json.organizations_id}}\",\n  \"staff\": \"{{ $('Set Deal').item.json.cs_da_conta }}\",\n   \"nameType\":\"Reunião\",\n   \"type\":\"CONFIGURE_ID_141\",\n  \"subject\":\"{{ new Date($('HubSpot_meetings').item.json.engagement.timestamp).toISOString().slice(2,16)    .replace('T',' ')}} - ATA DE REUNIAO {{ ($('HubSpot_meetings').item.json.engagement.activityType || \"\").replace(/\"/g, '') }}\",\n   \"description\":\"{{ \n  ($json.output ?? \"\")\n    .toString()\n    .replace(/```html|```/g, \"\")     // remove blocos de código markdown\n    .replace(/[\\n\\r\\t]+/g, \" \")      // remove quebras e tabs\n    .replace(/\\s{2,}/g, \" \")         // colapsa múltiplos espaços\n    .replace(/\\\\/g, \"\\\\\\\\\")          // escapa barras invertidas\n    .replace(/\"/g, \"'\")              // troca aspas duplas por simples\n    .replace(/\\u0000/g, \"\")          // remove caracteres nulos\n    .trim()\n||   ($('HubSpot_meetings').item.json.engagement.bodyPreview ?? \"\")\n    .toString()\n    .replace(/```html|```/g, \"\")     // remove blocos de código markdown\n    .replace(/[\\n\\r\\t]+/g, \" \")      // remove quebras e tabs\n    .replace(/\\s{2,}/g, \" \")         // colapsa múltiplos espaços\n    .replace(/\\\\/g, \"\\\\\\\\\")          // escapa barras invertidas\n    .replace(/\"/g, \"'\")              // troca aspas duplas por simples\n    .replace(/\\u0000/g, \"\")          // remove caracteres nulos\n    .trim()}}\"\n}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1504,
+        1504
+      ],
+      "id": "302d8a45-7433-400c-9b64-c0bfa1c0379e",
+      "name": "UpDate - Deal",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": "={{ $('Loop Over Items').context.done }}"
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        928,
+        1504
+      ],
+      "id": "ec0eab76-45e0-4700-a9d1-af1116922664",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.hubapi.com/crm/v3/objects/CONFIGURE_ID_007/{{$('Set Deal').item.json.id_hubspot }}?associations=contact&associations=email&associations=notes&associations=meetings",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "bcfab34c-b268-41bf-9be9-cb74c8fce7e4",
+      "name": "Obter Associações 2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1040,
+        1280
+      ],
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "amount": 12,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        1504
+      ],
+      "id": "46560ed9-1305-4014-91ae-749a0cd27052",
+      "name": "Wait7"
+    },
+    {
+      "parameters": {
+        "amount": 10,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        912,
+        1280
+      ],
+      "id": "b389c951-a0ad-4d9e-b075-dffda5ad7a22",
+      "name": "Wait8",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "resource": "engagement",
+        "operation": "get",
+        "engagementId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        1312,
+        1504
+      ],
+      "id": "69c42519-98cf-4ebf-864e-7eff0ea7b4b5",
+      "name": "HubSpot_meetings",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.hubapi.com/crm/v3/objects/CONFIGURE_ID_007/search?",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_pipeline\",\n          \"operator\": \"EQ\",\n          \"value\": \"CONFIGURE_PIPELINE_192\"\n        },\n        {\n          \"propertyName\": \"hs_pipeline_stage\",\n          \"operator\": \"IN\",\n          \"values\": [\"CONFIGURE_STAGE_193\",\"CONFIGURE_STAGE_194\",\"CONFIGURE_STAGE_195\",\"CONFIGURE_STAGE_196\",\"CONFIGURE_STAGE_197\",\"CONFIGURE_STAGE_198\",\"CONFIGURE_STAGE_199\"]\n        },\n        {\n          \"propertyName\": \"conta_name\",\n          \"operator\": \"EQ\",\n          \"value\": \"EMPRESA_DEMO\"\n        }    \n      ]\n    }\n  ],\n  \"properties\": [\n    \"hs_createdate\",\n    \"conta_name\",\n    \"guide_legado\",\n    \"grupo_economico\",\n    \"id_do_parceiro_sankhya\",\n    \"cs_da_conta\",\n    \"razao_social_da_conta\",\n    \"cnpj\",\n    \"pulse\",\n    \"motivo_de_pulse\",\n    \"data_de_atualizacao_do_pulse\",\n    \"canais_de_coleta_utilizados_hoje_pelo_cliente\",\n    \"canais_de_coleta_que_o_cliente_pretende_utilizar\",\n    \"data_de_inicio_da_vigencia\",\n    \"data_de_fim_da_vigencia\",\n    \"vigencia_do_contrato__em_meses_\",\n    \"qual_o_segmento_de_atuacao_da_sua_empresa_\",\n    \"subsegmento_da_empresa\",\n    \"proprietario_ev\",\n    \"Valor\",\n    \"valor_do_pagamento_no_ultimo_faturamento\",\n    \"cidade\",\n    \"estado__uf_\",\n    \"plataforma_legado\",\n    \"professional_service_contratado\",\n    \"logradouro\",\n    \"complemento\",\n    \"endereco_completo\",\n    \"site\",\n    \"link_do_contrato_assinado\",\n    \"link_da_proposta\",\n    \"metricas_que_a_empresa_pretende_acompanhar\",\n    \"principal_desafio_para_alcancar_objetivo\",\n    \"objetivo_principal_com_a_plataforma\",\n    \"numero_de_clientes_monitorados_por_ciclo\",\n    \"ciclo_de_monitoramento\",\n    \"data_da_ultima_renovacao_dos_creditos\",\n    \"dia_da_renovacao_do_ciclo\",\n    \"guide_sap__codigo_pn_\",\n    \"hs_object_id\",\n    \"recorrencia_de_pagamento\"\n  ],\n  \"limit\": 200,\n  \"after\": 0\n}",
+        "options": {}
+      },
+      "id": "c5083147-79b4-4b73-ad2a-de72f67028dc",
+      "name": "ObterContas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        -464,
+        800
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Usando inputData em vez de $()\nconst inputData = $input.all();\nlet engagements = [];\n\n// Verifica se há dados de entrada\nif (inputData && inputData.length > 0) {\n  engagements = inputData[0]?.json?.associations?.emails?.results || [];\n}\n\n// Pega apenas os últimos 5 registros (ajuste conforme necessário)\nconst last12Engagements = engagements.slice(-10);\n\n// Retorna os registros, ou \"SemAssociacao\" se não houver nenhum\nif (last12Engagements.length === 0) {\n  return [{ json: { id: \"SemAssociacao\" } }];\n}\n\nreturn last12Engagements.map(c => ({\n  json: { id: c.id }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1248,
+        704
+      ],
+      "id": "0230c717-7fd9-4379-8d91-e072da4e8d70",
+      "name": "Separar E-mail"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Usando inputData em vez de $()\nconst inputData = $input.all();\nlet engagements = [];\n\n// Verifica se há dados de entrada\nif (inputData && inputData.length > 0) {\n  engagements = inputData[0]?.json?.associations?.meetings?.results || [];\n}\n\n// Pega apenas os últimos 5 registros (ajuste conforme necessário)\nconst last12Engagements = engagements.slice(-5);\n\n// Retorna os registros, ou \"SemAssociacao\" se não houver nenhum\nif (last12Engagements.length === 0) {\n  return [{ json: { id: \"SemAssociacao\" } }];\n}\n\nreturn last12Engagements.map(c => ({\n  json: { id: c.id }\n}));\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        1280
+      ],
+      "id": "332fa2b2-4820-4977-b4da-a04d52a125f3",
+      "name": "Separar Meet"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "CONFIGURE_ID_181",
+              "leftValue": "={{ $json.id ==\"SemAssociacao\"}}",
+              "rightValue": "SemAssociacao",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1360,
+        1280
+      ],
+      "id": "10fc85aa-b5fd-46ed-82f5-862176e48b53",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "CONFIGURE_ID_181",
+              "leftValue": "={{ $json.id ==\"SemAssociacao\"}}",
+              "rightValue": "SemAssociacao",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        704
+      ],
+      "id": "965de305-6456-4d76-85a2-476b76f10a3c",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "CONFIGURE_ID_181",
+              "leftValue": "={{ $json.id ==\"SemAssociacao\"}}",
+              "rightValue": "SemAssociacao",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        128
+      ],
+      "id": "ced1c59f-09b3-402a-af34-bf9836f3336f",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "CONFIGURE_ID_181",
+              "leftValue": "={{ $json.id ==\"SemAssociacao\"}}",
+              "rightValue": "SemAssociacao",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        384,
+        1264
+      ],
+      "id": "428e1096-e145-4443-8c34-281087e13748",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "url": "=https://receitaws.com.br/v1/cnpj/{{ ($json.cnpj || \"\").toString().replace(/[.\\-\\/]/g, \"\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        992
+      ],
+      "id": "100fa598-e078-48f2-8631-cb483ed5656e",
+      "name": "ObterDados CNPJ",
+      "onError": "continueRegularOutput",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.hubapi.com/crm/v3/objects/CONFIGURE_ID_007/{{ $('Set Deal').item.json.id_hubspot }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "authorization",
+              "value": "CONFIGURE_SECRET_PRIVATELY"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"properties\": {\n        \"magnetcustomer\":\"Sim\"\n    }\n} ",
+        "options": {}
+      },
+      "id": "4410a9dc-7309-426f-94a4-3d178c70e3d5",
+      "name": "Atualizar HubSpot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -96,
+        1024
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "executeOnce": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {
+          "reset": "={{ $('Separar').context.done }}"
+        }
+      },
+      "id": "800c6d0c-7961-4c83-a749-e502ec9eed8c",
+      "name": "Separar",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "45  18 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -464,
+        512
+      ],
+      "id": "5a551275-d29d-417b-ba02-17cb2b0ab548",
+      "name": "Schedule Trigger",
+      "disabled": true
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "ObterContas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF6": {
+      "main": [
+        [
+          {
+            "node": "paginacao3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Obter Grupo Economico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "paginacao3": {
+      "main": [
+        [
+          {
+            "node": "Paginação HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF7": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "All",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "prox_pag3": {
+      "main": [
+        [
+          {
+            "node": "paginacao3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Paginação HubSpot": {
+      "main": [
+        [
+          {
+            "node": "IF7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "prox_pag3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All": {
+      "main": [
+        [
+          {
+            "node": "Extração do Grupo Econômico1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter Grupo Economico": {
+      "main": [
+        [
+          {
+            "node": "Separar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Token": {
+      "main": [
+        [
+          {
+            "node": "Criar Deal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Organização": {
+      "main": [
+        [
+          {
+            "node": "Obetem negócios vinculados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Empresa": {
+      "main": [
+        [
+          {
+            "node": "Token empresa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obetem negócios vinculados": {
+      "main": [
+        [
+          {
+            "node": "Set Deal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Deal": {
+      "main": [
+        [
+          {
+            "node": "Loop 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar descrição Simplificada": {
+      "main": [
+        [
+          {
+            "node": "Gerar Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Deal": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separar Contatos": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items2": {
+      "main": [
+        [
+          {
+            "node": "Atualizar HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter Contato HubSpot": {
+      "main": [
+        [
+          {
+            "node": "Criar Contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Contato": {
+      "main": [
+        [
+          {
+            "node": "UpDate - Organizations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpDate - Organizations": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "UpDate - Deal1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpDate - Deal1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop 1": {
+      "main": [
+        [
+          {
+            "node": "Separar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "ObterDados CNPJ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Wait8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter Associações 1": {
+      "main": [
+        [
+          {
+            "node": "Separar E-mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HubSpot1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "UpDate - Deal2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpDate - Deal2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separar Notes1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items3": {
+      "main": [
+        [
+          {
+            "node": "Wait6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter Associações ": {
+      "main": [
+        [
+          {
+            "node": "Separar Notes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Obter Associações do Negócio- Contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "HubSpot1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Obter Associações ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter Associações do Negócio- Contato": {
+      "main": [
+        [
+          {
+            "node": "Separar Contatos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait5": {
+      "main": [
+        [
+          {
+            "node": "Obter Contato HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HubSpot_Email": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HubSpot_Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait6": {
+      "main": [
+        [
+          {
+            "node": "Obter Associações 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token empresa": {
+      "main": [
+        [
+          {
+            "node": "Criar Organização",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "UpDate - Deal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpDate - Deal": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter Associações 2": {
+      "main": [
+        [
+          {
+            "node": "Separar Meet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait7": {
+      "main": [
+        [
+          {
+            "node": "HubSpot_meetings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait8": {
+      "main": [
+        [
+          {
+            "node": "Obter Associações 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HubSpot_meetings": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ObterContas": {
+      "main": [
+        [
+          {
+            "node": "IF6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separar E-mail": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separar Meet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Wait8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Wait6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Atualizar HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ObterDados CNPJ": {
+      "main": [
+        [
+          {
+            "node": "Criar descrição Simplificada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar HubSpot": {
+      "main": [
+        [
+          {
+            "node": "Loop 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extração do Grupo Econômico1": {
+      "main": [
+        [
+          {
+            "node": "Separar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separar": {
+      "main": [
+        [
+          {
+            "node": "Set Empresa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "ObterContas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": []
+}
