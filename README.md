@@ -4,9 +4,9 @@ Case de migração de clientes **ativos e cancelados**, reunindo **n8n, APIs RES
 
 ## O desafio
 
-Os CRMs tinham propriedades, entidades e processos diferentes. Segundo o autor, a operação no destino era feita registro a registro. A automação organizou extração, agrupamento, enriquecimento, criação de vínculos e transferência de partes da jornada comercial.
+Encontrei CRMs com propriedades, entidades e processos diferentes, e a operação no destino era feita registro a registro. Desenvolvi a automação para organizar a extração, o agrupamento, o enriquecimento, a criação de vínculos e a transferência de partes da jornada comercial.
 
-O autor relata uma execução de quase um dia, envolvendo chamadas e tratamento por registro. Essa duração não foi medida nesta preparação. O case não afirma uma economia de horas específica ou migração integral de todo o histórico.
+A execução da migração levou quase um dia no ambiente em que trabalhei, envolvendo chamadas e tratamento por registro. Esse tempo reflete minha experiência operacional e não foi medido de forma independente nesta publicação. O fluxo documentado transfere os recortes de histórico descritos nas versões, sem pressupor cobertura integral.
 
 ## Arquitetura
 
