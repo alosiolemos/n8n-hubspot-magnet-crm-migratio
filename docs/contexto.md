@@ -6,4 +6,4 @@ O desenho organiza a migração por dependências. Primeiro obtém e agrupa regi
 
 A versão de clientes ativos e a de cancelados foram mantidas separadas para preservar seus filtros e diferenças de tratamento. A documentação não considera os exports idênticos.
 
-O autor relata que o processo levou quase um dia de execução. Não foram recebidos logs com duração total, volumes reconciliados ou taxa de erro. O valor demonstrado é a engenharia da transformação e da orquestração; não se atribuem ganhos quantitativos não medidos.
+No ambiente em que executei a migração, o processo levou quase um dia. Não incluí nesta publicação logs de duração total, volumes reconciliados ou taxa de erro. Meu foco neste case é apresentar a engenharia da transformação e da orquestração, sem atribuir ganhos quantitativos que não medi.
